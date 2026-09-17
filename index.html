@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>账本</title>
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIuaIkeeahOi0puacrCIsICJzaG9ydF9uYW1lIjogIui0puacrCIsICJzdGFydF91cmwiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjRkFGOEY1IiwgInRoZW1lX2NvbG9yIjogIiMyRDZBNkEiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQXhPVElnTVRreUlqNDhjbVZqZENCM2FXUjBhRDBpTVRreUlpQm9aV2xuYUhROUlqRTVNaUlnY25nOUlqUXdJaUJtYVd4c1BTSWpNa1EyUVRaQklpOCtQSFJsZUhRZ2VEMGlPVFlpSUhrOUlqRXlPQ0lnWm05dWRDMXphWHBsUFNJeE1EQWlJSFJsZUhRdFlXNWphRzl5UFNKdGFXUmtiR1VpSUdadmJuUXRabUZ0YVd4NVBTSXRZWEJ3YkdVdGMzbHpkR1Z0TEhOaGJuTXRjMlZ5YVdZaVB2Q2ZrNUk4TDNSbGVIUStQQzl6ZG1jKyIsICJzaXplcyI6ICIxOTJ4MTkyIiwgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSJ9XX0=">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="账本">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2D6A6A">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgcng9IjQwIiBmaWxsPSIjMkQ2QTZBIi8+PHRleHQgeD0iOTYiIHk9IjEyOCIgZm9udC1zaXplPSIxMDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSItYXBwbGUtc3lzdGVtLHNhbnMtc2VyaWYiPvCfk5I8L3RleHQ+PC9zdmc+">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgcng9IjQwIiBmaWxsPSIjMkQ2QTZBIi8+PHRleHQgeD0iOTYiIHk9IjEyOCIgZm9udC1zaXplPSIxMDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSItYXBwbGUtc3lzdGVtLHNhbnMtc2VyaWYiPvCfk5I8L3RleHQ+PC9zdmc+">
+<style>
+  :root{
+    --bg:#FAF8F5;
+    --ink:#1C1E26;
+    --ink-soft:#6B6E7A;
+    --line:#E8E4DD;
+    --accent:#2D6A6A;
+    --accent-soft:#E4EEEE;
+    --amber:#D4913A;
+    --red:#B4483C;
+    --white:#FFFFFF;
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#17181D;
+      --ink:#F0EFEA;
+      --ink-soft:#9A9CA8;
+      --line:#2C2E38;
+      --accent:#4A9494;
+      --accent-soft:#20302F;
+      --white:#22242C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17181D;
+    --ink:#F0EFEA;
+    --ink-soft:#9A9CA8;
+    --line:#2C2E38;
+    --accent:#4A9494;
+    --accent-soft:#20302F;
+    --white:#22242C;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Segoe UI","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .install-tip{
+    max-width:480px;margin:0 auto;
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-size:12.5px;
+    padding:10px 20px;
+    text-align:center;
+    line-height:1.5;
+    display:none;
+  }
+  .install-tip.show{display:block;}
+  .install-tip b{font-weight:700;}
+  .install-tip .close-tip{
+    display:inline-block;margin-left:8px;color:var(--ink-soft);cursor:pointer;
+  }
+  .num{
+    font-variant-numeric:tabular-nums;
+    font-feature-settings:"tnum";
+  }
+  #app{
+    max-width:480px;
+    margin:0 auto;
+    min-height:100vh;
+    background:var(--bg);
+    position:relative;
+    padding-bottom:90px;
+  }
+  /* ---- Top bar ---- */
+  .topbar{
+    position:sticky; top:0; z-index:20;
+    background:var(--bg);
+    padding:18px 20px 12px;
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid transparent;
+  }
+  .topbar.scrolled{border-bottom-color:var(--line);}
+  .topbar h1{
+    font-size:22px; font-weight:700; margin:0; letter-spacing:-0.02em;
+  }
+  .icon-btn{
+    width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--white); border:1px solid var(--line);
+    color:var(--ink); font-size:18px; cursor:pointer;
+    flex-shrink:0;
+  }
+  .back-btn{
+    width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:none;border:none;color:var(--ink);font-size:22px;cursor:pointer;
+    margin-left:-8px;
+  }
+
+  /* ---- Search ---- */
+  .search-wrap{padding:0 20px 14px;}
+  .search-box{
+    display:flex;align-items:center;gap:8px;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px 14px;
+  }
+  .search-box input{
+    border:none;outline:none;background:none;
+    font-size:15px;color:var(--ink);width:100%;
+    font-family:inherit;
+  }
+  .search-box input::placeholder{color:#B4B2AC;}
+  .search-box svg{flex-shrink:0;}
+
+  /* ---- Summary strip on home ---- */
+  .home-summary{
+    margin:0 20px 18px;
+    background:var(--ink);
+    border-radius:var(--radius);
+    padding:20px 20px 18px;
+    color:var(--white);
+    cursor:pointer;
+  }
+  .home-summary .label{font-size:13px;color:#B9BAC4;margin-bottom:6px;}
+  .home-summary .amount{font-size:30px;font-weight:700;letter-spacing:-0.02em;}
+  .home-summary .sub{display:flex;gap:18px;margin-top:12px;font-size:13px;color:#B9BAC4;}
+  .home-summary .sub b{color:var(--white);font-weight:600;}
+  .home-summary .chev{float:right;opacity:0.5;margin-top:4px;}
+
+  /* ---- Customer list ---- */
+  .section-label{
+    padding:4px 20px 8px;
+    font-size:13px;color:var(--ink-soft);
+  }
+  .customer-list{padding:0 20px;}
+  .customer-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 4px;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+  }
+  .customer-row:last-child{border-bottom:none;}
+  .customer-info{display:flex;flex-direction:column;gap:4px;min-width:0;}
+  .customer-name{font-size:16px;font-weight:600;color:var(--ink);}
+  .customer-meta{font-size:12.5px;color:var(--ink-soft);}
+  .customer-amount{
+    font-size:17px;font-weight:700;color:var(--ink);
+    flex-shrink:0;margin-left:12px;
+  }
+
+  .empty-state{
+    text-align:center;padding:70px 30px;color:var(--ink-soft);
+  }
+  .empty-state .emoji{font-size:38px;margin-bottom:10px;}
+  .empty-state p{font-size:14px;line-height:1.6;margin:0;}
+
+  /* ---- FAB ---- */
+  .fab{
+    position:fixed;
+    left:50%;
+    transform:translateX(calc(-50% + 190px));
+    bottom:28px;
+    width:56px;height:56px;border-radius:50%;
+    background:var(--accent);color:var(--white);
+    border:none;font-size:26px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 18px rgba(45,106,106,0.35);
+    cursor:pointer;z-index:30;
+  }
+  @media (max-width:480px){
+    .fab{transform:none; right:24px; left:auto;}
+  }
+
+  /* ---- Detail page stat strip ---- */
+  .detail-header{padding:6px 20px 18px;}
+  .detail-name{font-size:24px;font-weight:700;margin:6px 0 16px;letter-spacing:-0.02em;}
+  .stat-strip{
+    display:flex;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .stat-cell{
+    flex:1;padding:14px 10px;text-align:center;
+    border-right:1px solid var(--line);
+  }
+  .stat-cell:last-child{border-right:none;}
+  .stat-cell .v{font-size:18px;font-weight:700;color:var(--ink);}
+  .stat-cell .l{font-size:11.5px;color:var(--ink-soft);margin-top:4px;}
+
+  .action-row{display:flex;gap:10px;padding:16px 20px 4px;}
+  .btn{
+    flex:1;
+    padding:14px 10px;
+    border-radius:12px;
+    border:none;
+    font-size:15px;font-weight:600;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    font-family:inherit;
+  }
+  .btn-primary{background:var(--accent);color:var(--white);}
+  .btn-secondary{background:var(--white);color:var(--ink);border:1px solid var(--line);}
+
+  /* ---- Tabs ---- */
+  .tabs{
+    display:flex;
+    margin:22px 20px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .tab{
+    flex:1;text-align:center;padding:10px 4px;
+    font-size:14.5px;color:var(--ink-soft);font-weight:600;
+    cursor:pointer;position:relative;
+  }
+  .tab.active{color:var(--ink);}
+  .tab.active::after{
+    content:"";position:absolute;bottom:-1px;left:20%;right:20%;
+    height:2px;background:var(--accent);border-radius:2px;
+  }
+  .tab-panel{display:none;padding:16px 20px 20px;}
+  .tab-panel.active{display:block;}
+
+  /* ---- Order list ---- */
+  .order-row{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    padding:14px 0;border-bottom:1px solid var(--line);
+    cursor:pointer;
+  }
+  .order-row:last-child{border-bottom:none;}
+  .order-left{min-width:0;flex:1;}
+  .order-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+  .order-note{font-size:12.5px;color:var(--ink-soft);margin-bottom:3px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .order-date{font-size:12px;color:#B4B2AC;}
+  .order-amount{font-size:16px;font-weight:700;color:var(--ink);margin-left:12px;flex-shrink:0;}
+  .trash-link{
+    text-align:center;color:var(--ink-soft);font-size:13px;
+    padding:16px 0 4px;cursor:pointer;
+  }
+  .restore-btn{
+    background:var(--accent-soft);color:var(--accent);
+    border:none;border-radius:8px;padding:7px 12px;
+    font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+
+  /* ---- Stats panel ---- */
+  .quick-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+  .qs-card{
+    background:var(--white);border:1px solid var(--line);border-radius:12px;
+    padding:14px;
+  }
+  .qs-card .l{font-size:12.5px;color:var(--ink-soft);margin-bottom:6px;}
+  .qs-card .v{font-size:19px;font-weight:700;color:var(--ink);}
+
+  .range-box{
+    background:var(--white);border:1px solid var(--line);border-radius:12px;
+    padding:16px;margin-bottom:16px;
+  }
+  .range-box h4{margin:0 0 12px;font-size:14px;font-weight:600;color:var(--ink);}
+  .range-inputs{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+  .range-inputs input{
+    flex:1;padding:10px 10px;border:1px solid var(--line);border-radius:10px;
+    font-size:14px;font-family:inherit;color:var(--ink);background:var(--bg);
+  }
+  .range-inputs span{color:var(--ink-soft);font-size:13px;}
+  .range-result{
+    display:flex;justify-content:space-between;
+    background:var(--accent-soft);border-radius:10px;padding:12px 14px;
+  }
+  .range-result .rr{text-align:center;flex:1;}
+  .range-result .v{font-size:18px;font-weight:700;color:var(--accent);}
+  .range-result .l{font-size:11.5px;color:var(--ink-soft);margin-top:2px;}
+
+  .rank-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 0;border-bottom:1px solid var(--line);
+  }
+  .rank-row:last-child{border-bottom:none;}
+  .rank-left{display:flex;align-items:center;gap:10px;}
+  .rank-idx{
+    width:22px;height:22px;border-radius:50%;
+    background:var(--accent-soft);color:var(--accent);
+    font-size:12px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .rank-idx.top{background:var(--amber);color:var(--white);}
+
+  /* ---- Modal / Sheet ---- */
+  .sheet-overlay{
+    position:fixed;inset:0;background:rgba(28,30,38,0.4);
+    z-index:100; display:none;
+  }
+  .sheet-overlay.show{display:block;}
+  .sheet{
+    position:fixed;left:0;right:0;bottom:0;
+    max-width:480px;margin:0 auto;
+    background:var(--bg);
+    border-radius:20px 20px 0 0;
+    padding:8px 20px 28px;
+    z-index:101;
+    transform:translateY(100%);
+    transition:transform 0.28s cubic-bezier(.32,.72,0,1);
+    max-height:88vh;overflow-y:auto;
+  }
+  .sheet.show{transform:translateY(0);}
+  .sheet-handle{
+    width:36px;height:4px;background:var(--line);border-radius:2px;
+    margin:8px auto 14px;
+  }
+  .sheet h3{margin:0 0 18px;font-size:18px;font-weight:700;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;color:var(--ink-soft);margin-bottom:6px;}
+  .field input, .field textarea{
+    width:100%;padding:13px 14px;border:1px solid var(--line);
+    border-radius:12px;font-size:15.5px;font-family:inherit;color:var(--ink);
+    background:var(--white);outline:none;
+  }
+  .field input:focus, .field textarea:focus{border-color:var(--accent);}
+  .field textarea{resize:none;min-height:60px;}
+  .field input[type="file"]{
+    padding:10px;font-size:13.5px;
+  }
+  .sheet-actions{display:flex;gap:10px;margin-top:22px;}
+  .sheet-actions .btn{padding:15px;}
+  .danger-link{
+    text-align:center;color:var(--red);font-size:14px;font-weight:600;
+    padding:14px 0 0;cursor:pointer;
+  }
+
+  .toast{
+    position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+    background:var(--ink);color:var(--white);
+    padding:11px 20px;border-radius:24px;font-size:13.5px;
+    z-index:200;opacity:0;transition:opacity 0.25s;pointer-events:none;
+  }
+  .toast.show{opacity:1;}
+
+  .loading{
+    display:flex;align-items:center;justify-content:center;
+    padding:60px 0;color:var(--ink-soft);font-size:14px;
+  }
+
+  ::-webkit-scrollbar{display:none;}
+</style>
+</head>
+<body>
+<div class="install-tip" id="installTip"></div>
+<div id="app">
+  <div class="toast" id="toast"></div>
+  <div id="page-root"></div>
+
+  <!-- Sheet overlay reused for all modals -->
+  <div class="sheet-overlay" id="sheetOverlay"></div>
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ Storage layer (browser localStorage) ============ */
+// customers: {id, name, createdAt}
+// orders: {id, customerId, title, note, amount, date, createdAt}
+const K_CUSTOMERS = "ledger_customers";
+const K_ORDERS = "ledger_orders";
+
+let DB = { customers: [], orders: [] };
+let dbReady = false;
+let storageAvailable = true;
+
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+async function loadDB(){
+  try{
+    const c = localStorage.getItem(K_CUSTOMERS);
+    DB.customers = c ? JSON.parse(c) : [];
+  }catch(e){ DB.customers = []; storageAvailable = false; }
+  try{
+    const o = localStorage.getItem(K_ORDERS);
+    DB.orders = o ? JSON.parse(o) : [];
+  }catch(e){ DB.orders = []; storageAvailable = false; }
+  dbReady = true;
+}
+
+async function saveCustomers(){
+  try{
+    localStorage.setItem(K_CUSTOMERS, JSON.stringify(DB.customers));
+  }catch(e){ showToast('保存失败，请检查浏览器存储空间'); }
+}
+async function saveOrders(){
+  try{
+    localStorage.setItem(K_ORDERS, JSON.stringify(DB.orders));
+  }catch(e){ showToast('保存失败，请检查浏览器存储空间'); }
+}
+
+/* ============ Helpers ============ */
+function fmtMoney(n){
+  n = Number(n)||0;
+  return n.toLocaleString('zh-CN', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0')+"-"+String(d.getDate()).padStart(2,'0');
+}
+function fmtDate(s){
+  if(!s) return "";
+  const [y,m,d] = s.split("-");
+  return `${y}年${parseInt(m)}月${parseInt(d)}日`;
+}
+function fmtDateShort(s){
+  if(!s) return "";
+  const [y,m,d] = s.split("-");
+  return `${parseInt(m)}月${parseInt(d)}日`;
+}
+function customerOrders(cid){
+  return DB.orders.filter(o=>o.customerId===cid && !o.deletedAt).sort((a,b)=> b.date.localeCompare(a.date) || b.createdAt-a.createdAt);
+}
+function customerDeletedOrders(cid){
+  return DB.orders.filter(o=>o.customerId===cid && o.deletedAt).sort((a,b)=> b.deletedAt-a.deletedAt);
+}
+function customerTotal(cid){
+  return customerOrders(cid).reduce((s,o)=>s+Number(o.amount||0),0);
+}
+function customerLastTime(cid){
+  const os = customerOrders(cid);
+  if(os.length===0) return null;
+  return os[0].date;
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>t.classList.remove('show'), 1800);
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* date range helpers */
+function inRange(dateStr, start, end){
+  return dateStr>=start && dateStr<=end;
+}
+function startOfWeek(d){
+  const dt = new Date(d);
+  const day = (dt.getDay()+6)%7; // Monday=0
+  dt.setDate(dt.getDate()-day);
+  return dt;
+}
+function toStr(d){
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0')+"-"+String(d.getDate()).padStart(2,'0');
+}
+
+/* ============ Router ============ */
+let route = { name:'home' };
+const root = document.getElementById('page-root');
+
+function nav(r){
+  route = r;
+  render();
+  window.scrollTo(0,0);
+}
+
+/* ============ Sheet (modal) system ============ */
+const sheetOverlay = document.getElementById('sheetOverlay');
+const sheetEl = document.getElementById('sheet');
+function openSheet(html){
+  sheetEl.innerHTML = html;
+  sheetOverlay.classList.add('show');
+  requestAnimationFrame(()=>sheetEl.classList.add('show'));
+}
+function closeSheet(){
+  sheetEl.classList.remove('show');
+  sheetOverlay.classList.remove('show');
+  setTimeout(()=>{ sheetEl.innerHTML=""; }, 280);
+}
+sheetOverlay.addEventListener('click', closeSheet);
+
+/* ============ Render: Home ============ */
+function renderHome(){
+  const q = (renderHome._q||"").trim().toLowerCase();
+  let customers = DB.customers.slice();
+  if(q){
+    customers = customers.filter(c=>c.name.toLowerCase().includes(q));
+  }
+  customers.sort((a,b)=>{
+    const la = customerLastTime(a.id) || "";
+    const lb = customerLastTime(b.id) || "";
+    return lb.localeCompare(la);
+  });
+
+  const totalAll = DB.orders.filter(o=>!o.deletedAt).reduce((s,o)=>s+Number(o.amount||0),0);
+  const orderCountAll = DB.orders.filter(o=>!o.deletedAt).length;
+
+  let rows = "";
+  if(customers.length===0){
+    rows = `<div class="empty-state">
+      <div class="emoji">📒</div>
+      <p>${q ? '没有找到匹配的客户' : '还没有客户\n点击右下角按钮添加第一个客户'}</p>
+    </div>`;
+  }else{
+    rows = customers.map(c=>{
+      const total = customerTotal(c.id);
+      const last = customerLastTime(c.id);
+      const orderN = customerOrders(c.id).length;
+      return `<div class="customer-row" data-id="${c.id}">
+        <div class="customer-info">
+          <div class="customer-name">${escapeHtml(c.name)}</div>
+          <div class="customer-meta">${last ? '最近 '+fmtDateShort(last) : '暂无记录'} · ${orderN} 笔</div>
+        </div>
+        <div class="customer-amount num">¥${fmtMoney(total)}</div>
+      </div>`;
+    }).join("");
+  }
+
+  root.innerHTML = `
+    <div class="topbar" id="topbar">
+      <h1>我的账本</h1>
+      <div style="display:flex;gap:8px;">
+        <div class="icon-btn" id="settingsBtn">⚙️</div>
+        <div class="icon-btn" id="statsBtn">📊</div>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B4B2AC" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="搜索客户" value="${escapeHtml(renderHome._q||"")}">
+      </div>
+    </div>
+    <div class="home-summary" id="summaryCard">
+      <div class="chev">›</div>
+      <div class="label">累计总金额</div>
+      <div class="amount num">¥${fmtMoney(totalAll)}</div>
+      <div class="sub"><span>客户 <b>${DB.customers.length}</b> 位</span><span>订单 <b>${orderCountAll}</b> 笔</span></div>
+    </div>
+    <div class="section-label">客户列表</div>
+    <div class="customer-list">${rows}</div>
+    <button class="fab" id="addCustomerFab">+</button>
+  `;
+
+  document.getElementById('searchInput').addEventListener('input', (e)=>{
+    renderHome._q = e.target.value;
+    renderHome();
+  });
+  document.querySelectorAll('.customer-row').forEach(row=>{
+    row.addEventListener('click', ()=> nav({name:'detail', id: row.dataset.id}));
+  });
+  document.getElementById('addCustomerFab').addEventListener('click', openAddCustomerSheet);
+  document.getElementById('settingsBtn').addEventListener('click', openSettingsSheet);
+  document.getElementById('summaryCard').addEventListener('click', ()=> nav({name:'homeStats'}));
+  document.getElementById('statsBtn').addEventListener('click', ()=> nav({name:'homeStats'}));
+
+  const topbar = document.getElementById('topbar');
+  window.onscroll = ()=>{ topbar.classList.toggle('scrolled', window.scrollY>4); };
+}
+
+/* ============ Data Backup: Export / Import ============ */
+function buildBackupPayload(){
+  return {
+    app: "personal-ledger",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    customers: DB.customers,
+    orders: DB.orders
+  };
+}
+
+function downloadBackupFile(){
+  const payload = buildBackupPayload();
+  const json = JSON.stringify(payload, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const dateStr = todayStr();
+  const filename = `账本备份_${dateStr}.json`;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+  return filename;
+}
+
+async function shareBackupFile(){
+  const payload = buildBackupPayload();
+  const json = JSON.stringify(payload, null, 2);
+  const dateStr = todayStr();
+  const filename = `账本备份_${dateStr}.json`;
+  if(navigator.share && navigator.canShare){
+    try{
+      const file = new File([json], filename, { type: 'application/json' });
+      if(navigator.canShare({ files: [file] })){
+        await navigator.share({ files: [file], title: '账本备份' });
+        return true;
+      }
+    }catch(e){ /* fall through to download */ }
+  }
+  downloadBackupFile();
+  return false;
+}
+
+function mergeBackupData(payload){
+  if(!payload || !Array.isArray(payload.customers) || !Array.isArray(payload.orders)){
+    throw new Error('invalid format');
+  }
+  const existingCustomerIds = new Set(DB.customers.map(c=>c.id));
+  const existingOrderIds = new Set(DB.orders.map(o=>o.id));
+  let addedCustomers = 0, addedOrders = 0;
+
+  payload.customers.forEach(c=>{
+    if(c && c.id && !existingCustomerIds.has(c.id)){
+      DB.customers.push(c);
+      existingCustomerIds.add(c.id);
+      addedCustomers++;
+    }
+  });
+  payload.orders.forEach(o=>{
+    if(o && o.id && !existingOrderIds.has(o.id)){
+      DB.orders.push(o);
+      existingOrderIds.add(o.id);
+      addedOrders++;
+    }
+  });
+  return { addedCustomers, addedOrders };
+}
+
+function openSettingsSheet(){
+  const lastBackup = localStorage.getItem('ledger_last_backup_at');
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <h3>数据备份</h3>
+    <p style="color:var(--ink-soft);font-size:13.5px;line-height:1.6;margin:-10px 0 18px;">
+      数据保存在本机浏览器中。建议定期导出备份，换设备或浏览器数据丢失时可导入恢复。
+      ${lastBackup ? `<br>上次备份：${lastBackup}` : ''}
+    </p>
+    <div class="sheet-actions" style="margin-top:0;">
+      <button class="btn btn-primary" id="exportBtn">导出备份</button>
+    </div>
+    <div class="field" style="margin-top:16px;">
+      <label>从备份文件恢复</label>
+      <input type="file" id="importFile" accept="application/json,.json">
+    </div>
+    <div class="sheet-actions">
+      <button class="btn btn-secondary" id="closeSettingsBtn">关闭</button>
+    </div>
+  `);
+  document.getElementById('closeSettingsBtn').addEventListener('click', closeSheet);
+  document.getElementById('exportBtn').addEventListener('click', async ()=>{
+    await shareBackupFile();
+    localStorage.setItem('ledger_last_backup_at', new Date().toLocaleString('zh-CN'));
+    showToast('备份已导出');
+  });
+  document.getElementById('importFile').addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = async ()=>{
+      try{
+        const payload = JSON.parse(reader.result);
+        const { addedCustomers, addedOrders } = mergeBackupData(payload);
+        await saveCustomers();
+        await saveOrders();
+        closeSheet();
+        showToast(`已恢复：新增 ${addedCustomers} 位客户、${addedOrders} 笔账单`);
+        render();
+      }catch(err){
+        showToast('备份文件格式不正确');
+      }
+    };
+    reader.readAsText(file);
+  });
+}
+
+function openAddCustomerSheet(){
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <h3>添加客户</h3>
+    <div class="field">
+      <label>客户名称</label>
+      <input type="text" id="custName" placeholder="例如：张先生" autofocus>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn btn-secondary" id="cancelBtn">取消</button>
+      <button class="btn btn-primary" id="saveBtn">保存</button>
+    </div>
+  `);
+  document.getElementById('cancelBtn').addEventListener('click', closeSheet);
+  document.getElementById('saveBtn').addEventListener('click', async ()=>{
+    const name = document.getElementById('custName').value.trim();
+    if(!name){ showToast('请输入客户名称'); return; }
+    const c = { id: uid(), name, createdAt: Date.now() };
+    DB.customers.push(c);
+    await saveCustomers();
+    closeSheet();
+    showToast('已添加客户');
+    render();
+  });
+}
+
+function openEditCustomerSheet(c){
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <h3>编辑客户</h3>
+    <div class="field">
+      <label>客户名称</label>
+      <input type="text" id="custName" value="${escapeHtml(c.name)}">
+    </div>
+    <div class="sheet-actions">
+      <button class="btn btn-secondary" id="cancelBtn">取消</button>
+      <button class="btn btn-primary" id="saveBtn">保存</button>
+    </div>
+    <div class="danger-link" id="deleteBtn">删除该客户及其所有账单</div>
+  `);
+  document.getElementById('cancelBtn').addEventListener('click', closeSheet);
+  document.getElementById('saveBtn').addEventListener('click', async ()=>{
+    const name = document.getElementById('custName').value.trim();
+    if(!name){ showToast('请输入客户名称'); return; }
+    c.name = name;
+    await saveCustomers();
+    closeSheet();
+    showToast('已保存');
+    render();
+  });
+  document.getElementById('deleteBtn').addEventListener('click', ()=>{
+    openSheet(`
+      <div class="sheet-handle"></div>
+      <h3>确认删除？</h3>
+      <p style="color:var(--ink-soft);font-size:14px;line-height:1.6;margin:-8px 0 4px;">
+        将删除客户「${escapeHtml(c.name)}」及其全部 ${customerOrders(c.id).length} 笔账单，此操作不可撤销。
+      </p>
+      <div class="sheet-actions">
+        <button class="btn btn-secondary" id="cancelDel">取消</button>
+        <button class="btn btn-primary" id="confirmDel" style="background:var(--red);">确认删除</button>
+      </div>
+    `);
+    document.getElementById('cancelDel').addEventListener('click', closeSheet);
+    document.getElementById('confirmDel').addEventListener('click', async ()=>{
+      DB.customers = DB.customers.filter(x=>x.id!==c.id);
+      DB.orders = DB.orders.filter(x=>x.customerId!==c.id);
+      await saveCustomers();
+      await saveOrders();
+      closeSheet();
+      showToast('已删除');
+      nav({name:'home'});
+    });
+  });
+}
+
+/* ============ Render: Customer Detail ============ */
+function renderDetail(id){
+  const c = DB.customers.find(x=>x.id===id);
+  if(!c){ nav({name:'home'}); return; }
+  const orders = customerOrders(id);
+  const total = orders.reduce((s,o)=>s+Number(o.amount||0),0);
+
+  root.innerHTML = `
+    <div class="topbar">
+      <div class="back-btn" id="backBtn">‹</div>
+      <div class="icon-btn" id="editBtn">✎</div>
+    </div>
+    <div class="detail-header">
+      <div class="detail-name">${escapeHtml(c.name)}</div>
+      <div class="stat-strip">
+        <div class="stat-cell"><div class="v num">¥${fmtMoney(total)}</div><div class="l">累计消费</div></div>
+        <div class="stat-cell"><div class="v num">${orders.length}</div><div class="l">订单数量</div></div>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-primary" id="addOrderBtn">＋ 新增账单</button>
+    </div>
+    <div class="tabs">
+      <div class="tab active" data-tab="orders">历史订单</div>
+      <div class="tab" data-tab="stats">统计</div>
+    </div>
+    <div class="tab-panel active" id="panel-orders"></div>
+    <div class="tab-panel" id="panel-stats"></div>
+  `;
+
+  document.getElementById('backBtn').addEventListener('click', ()=> nav({name:'home'}));
+  document.getElementById('editBtn').addEventListener('click', ()=> openEditCustomerSheet(c));
+  document.getElementById('addOrderBtn').addEventListener('click', ()=> openOrderSheet(c, null));
+
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('panel-'+t.dataset.tab).classList.add('active');
+    });
+  });
+
+  renderOrdersPanel(c);
+  renderStatsPanel(c);
+}
+
+function renderOrdersPanel(c){
+  const orders = customerOrders(c.id);
+  const trashCount = customerDeletedOrders(c.id).length;
+  const panel = document.getElementById('panel-orders');
+  const trashLink = `<div class="trash-link" id="trashLink">🗑 回收站${trashCount > 0 ? ' ('+trashCount+')' : ''}</div>`;
+  if(orders.length===0){
+    panel.innerHTML = `<div class="empty-state"><div class="emoji">🧾</div><p>还没有账单记录</p></div>${trashLink}`;
+    document.getElementById('trashLink').addEventListener('click', ()=> openTrashSheet(c));
+    return;
+  }
+  panel.innerHTML = orders.map(o=>`
+    <div class="order-row" data-id="${o.id}">
+      <div class="order-left">
+        <div class="order-title">${escapeHtml(o.title)}</div>
+        ${o.note ? `<div class="order-note">${escapeHtml(o.note)}</div>` : ''}
+        <div class="order-date">${fmtDate(o.date)}</div>
+      </div>
+      <div class="order-amount num">¥${fmtMoney(o.amount)}</div>
+    </div>
+  `).join("") + trashLink;
+  panel.querySelectorAll('.order-row').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const o = orders.find(x=>x.id===row.dataset.id);
+      openOrderSheet(c, o);
+    });
+  });
+  document.getElementById('trashLink').addEventListener('click', ()=> openTrashSheet(c));
+}
+
+function openTrashSheet(c){
+  const deleted = customerDeletedOrders(c.id);
+  const rows = deleted.length === 0
+    ? `<div class="empty-state" style="padding:40px 10px;"><p>回收站是空的</p></div>`
+    : deleted.map(o=>`
+      <div class="order-row" data-id="${o.id}" style="cursor:default;">
+        <div class="order-left">
+          <div class="order-title">${escapeHtml(o.title)}</div>
+          ${o.note ? `<div class="order-note">${escapeHtml(o.note)}</div>` : ''}
+          <div class="order-date">${fmtDate(o.date)}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div class="order-amount num">¥${fmtMoney(o.amount)}</div>
+          <button class="restore-btn" data-id="${o.id}">恢复</button>
+        </div>
+      </div>
+    `).join("");
+
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <h3>回收站</h3>
+    <p style="color:var(--ink-soft);font-size:13px;line-height:1.5;margin:-10px 0 12px;">已删除的账单会保留在这里，可随时恢复。</p>
+    <div style="max-height:50vh;overflow-y:auto;">${rows}</div>
+    <div class="sheet-actions">
+      <button class="btn btn-secondary" id="closeTrashBtn">关闭</button>
+    </div>
+  `);
+  document.getElementById('closeTrashBtn').addEventListener('click', closeSheet);
+  document.querySelectorAll('.restore-btn').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const o = DB.orders.find(x=>x.id===btn.dataset.id);
+      if(o){
+        delete o.deletedAt;
+        await saveOrders();
+        showToast('已恢复');
+        closeSheet();
+        renderDetail(c.id);
+      }
+    });
+  });
+}
+
+function renderStatsPanel(c){
+  const orders = customerOrders(c.id);
+  const today = todayStr();
+  const now = new Date();
+
+  const sumBy = (pred)=> orders.filter(pred).reduce((s,o)=>s+Number(o.amount||0),0);
+
+  const todayTotal = sumBy(o=>o.date===today);
+  const weekStart = toStr(startOfWeek(now));
+  const weekTotal = sumBy(o=>o.date>=weekStart && o.date<=today);
+  const monthStart = now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,'0')+"-01";
+  const monthTotal = sumBy(o=>o.date>=monthStart && o.date<=today);
+  const yearStart = now.getFullYear()+"-01-01";
+  const yearTotal = sumBy(o=>o.date>=yearStart && o.date<=today);
+
+  const panel = document.getElementById('panel-stats');
+  panel.innerHTML = `
+    <div class="quick-stats">
+      <div class="qs-card"><div class="l">今日</div><div class="v num">¥${fmtMoney(todayTotal)}</div></div>
+      <div class="qs-card"><div class="l">本周</div><div class="v num">¥${fmtMoney(weekTotal)}</div></div>
+      <div class="qs-card"><div class="l">本月</div><div class="v num">¥${fmtMoney(monthTotal)}</div></div>
+      <div class="qs-card"><div class="l">本年度</div><div class="v num">¥${fmtMoney(yearTotal)}</div></div>
+    </div>
+    <div class="range-box">
+      <h4>自定义时间范围</h4>
+      <div class="range-inputs">
+        <input type="date" id="rangeStart" value="${monthStart}">
+        <span>至</span>
+        <input type="date" id="rangeEnd" value="${today}">
+      </div>
+      <div class="range-result">
+        <div class="rr"><div class="v num" id="rangeAmount">¥0.00</div><div class="l">总金额</div></div>
+        <div class="rr"><div class="v num" id="rangeCount">0</div><div class="l">总订单数</div></div>
+      </div>
+    </div>
+  `;
+
+  function updateRange(){
+    const s = document.getElementById('rangeStart').value;
+    const e = document.getElementById('rangeEnd').value;
+    if(!s || !e) return;
+    const filtered = orders.filter(o=>inRange(o.date, s, e));
+    document.getElementById('rangeAmount').textContent = '¥'+fmtMoney(filtered.reduce((sum,o)=>sum+Number(o.amount||0),0));
+    document.getElementById('rangeCount').textContent = filtered.length;
+  }
+  document.getElementById('rangeStart').addEventListener('change', updateRange);
+  document.getElementById('rangeEnd').addEventListener('change', updateRange);
+  updateRange();
+}
+
+function openOrderSheet(c, order){
+  const isEdit = !!order;
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <h3>${isEdit ? '编辑账单' : '新增账单'}</h3>
+    <div class="field">
+      <label>商品 / 服务名称</label>
+      <input type="text" id="oTitle" placeholder="例如：网站设计费" value="${isEdit ? escapeHtml(order.title) : ''}">
+    </div>
+    <div class="field">
+      <label>金额（元）</label>
+      <input type="number" id="oAmount" inputmode="decimal" placeholder="0.00" value="${isEdit ? order.amount : ''}">
+    </div>
+    <div class="field">
+      <label>日期</label>
+      <input type="date" id="oDate" value="${isEdit ? order.date : todayStr()}">
+    </div>
+    <div class="field">
+      <label>备注</label>
+      <textarea id="oNote" placeholder="选填">${isEdit ? escapeHtml(order.note||'') : ''}</textarea>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn btn-secondary" id="cancelBtn">取消</button>
+      <button class="btn btn-primary" id="saveBtn">保存</button>
+    </div>
+    ${isEdit ? `<div class="danger-link" id="deleteOrderBtn">删除该账单</div>` : ''}
+  `);
+  document.getElementById('cancelBtn').addEventListener('click', closeSheet);
+  document.getElementById('saveBtn').addEventListener('click', async ()=>{
+    const title = document.getElementById('oTitle').value.trim();
+    const amount = parseFloat(document.getElementById('oAmount').value);
+    const date = document.getElementById('oDate').value || todayStr();
+    const note = document.getElementById('oNote').value.trim();
+    if(!title){ showToast('请输入商品/服务名称'); return; }
+    if(isNaN(amount)){ showToast('请输入有效金额'); return; }
+
+    if(isEdit){
+      order.title = title; order.amount = amount; order.date = date; order.note = note;
+    }else{
+      DB.orders.push({ id: uid(), customerId: c.id, title, amount, date, note, createdAt: Date.now() });
+    }
+    await saveOrders();
+    closeSheet();
+    showToast(isEdit ? '已更新账单' : '已添加账单');
+    renderDetail(c.id);
+  });
+  if(isEdit){
+    document.getElementById('deleteOrderBtn').addEventListener('click', ()=>{
+      openSheet(`
+        <div class="sheet-handle"></div>
+        <h3>删除该账单？</h3>
+        <p style="color:var(--ink-soft);font-size:14px;line-height:1.6;margin:-8px 0 4px;">删除后会移入回收站，可以随时恢复。</p>
+        <div class="sheet-actions">
+          <button class="btn btn-secondary" id="cancelDel">取消</button>
+          <button class="btn btn-primary" id="confirmDel" style="background:var(--red);">删除</button>
+        </div>
+      `);
+      document.getElementById('cancelDel').addEventListener('click', closeSheet);
+      document.getElementById('confirmDel').addEventListener('click', async ()=>{
+        order.deletedAt = Date.now();
+        await saveOrders();
+        closeSheet();
+        showToast('已移至回收站，可在回收站恢复');
+        renderDetail(c.id);
+      });
+    });
+  }
+}
+
+/* ============ Render: Home-level Stats ============ */
+function renderHomeStats(){
+  const today = todayStr();
+  const now = new Date();
+  const monthStart = now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,'0')+"-01";
+
+  root.innerHTML = `
+    <div class="topbar">
+      <div class="back-btn" id="backBtn">‹</div>
+      <div style="font-size:16px;font-weight:700;">整体统计</div>
+      <div style="width:38px;"></div>
+    </div>
+    <div style="padding:0 20px;">
+      <div class="range-box">
+        <h4>选择时间范围</h4>
+        <div class="range-inputs">
+          <input type="date" id="rangeStart" value="${monthStart}">
+          <span>至</span>
+          <input type="date" id="rangeEnd" value="${today}">
+        </div>
+        <div class="range-result">
+          <div class="rr"><div class="v num" id="rangeAmount">¥0.00</div><div class="l">总金额</div></div>
+          <div class="rr"><div class="v num" id="rangeCount">0</div><div class="l">总订单数</div></div>
+        </div>
+      </div>
+      <div class="section-label" style="padding-left:0;">客户金额排行</div>
+      <div class="range-box" id="rankBox" style="padding:6px 16px;"></div>
+    </div>
+  `;
+  document.getElementById('backBtn').addEventListener('click', ()=> nav({name:'home'}));
+
+  function update(){
+    const s = document.getElementById('rangeStart').value;
+    const e = document.getElementById('rangeEnd').value;
+    if(!s || !e) return;
+    const filtered = DB.orders.filter(o=>!o.deletedAt && inRange(o.date, s, e));
+    document.getElementById('rangeAmount').textContent = '¥'+fmtMoney(filtered.reduce((sum,o)=>sum+Number(o.amount||0),0));
+    document.getElementById('rangeCount').textContent = filtered.length;
+
+    const byCustomer = {};
+    filtered.forEach(o=>{
+      byCustomer[o.customerId] = (byCustomer[o.customerId]||0) + Number(o.amount||0);
+    });
+    const ranked = Object.entries(byCustomer)
+      .map(([cid, amt])=>({ cid, amt, name: (DB.customers.find(c=>c.id===cid)||{}).name || '未知客户' }))
+      .sort((a,b)=>b.amt-a.amt);
+
+    const rankBox = document.getElementById('rankBox');
+    if(ranked.length===0){
+      rankBox.innerHTML = `<div class="empty-state" style="padding:30px 10px;"><p>该时间范围内暂无记录</p></div>`;
+    }else{
+      rankBox.innerHTML = ranked.map((r,i)=>`
+        <div class="rank-row">
+          <div class="rank-left">
+            <div class="rank-idx ${i===0?'top':''}">${i+1}</div>
+            <div style="font-size:14.5px;font-weight:600;">${escapeHtml(r.name)}</div>
+          </div>
+          <div class="num" style="font-weight:700;">¥${fmtMoney(r.amt)}</div>
+        </div>
+      `).join("");
+    }
+  }
+  document.getElementById('rangeStart').addEventListener('change', update);
+  document.getElementById('rangeEnd').addEventListener('change', update);
+  update();
+}
+
+/* ============ Main render dispatcher ============ */
+function render(){
+  if(!dbReady) return;
+  if(route.name==='home') renderHome();
+  else if(route.name==='detail') renderDetail(route.id);
+  else if(route.name==='homeStats') renderHomeStats();
+}
+
+/* ============ Init ============ */
+(async function init(){
+  await loadDB();
+  render();
+  initInstallTip();
+})();
+
+/* ---- 注册 Service Worker，让在线版本也能离线打开 ---- */
+if('serviceWorker' in navigator && location.protocol.indexOf('http') === 0){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
+function initInstallTip(){
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const dismissed = localStorage.getItem('ledger_install_tip_dismissed');
+  if(isStandalone || dismissed) return;
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua);
+  const isAndroid = /Android/.test(ua);
+  let msg = "";
+  if(isIOS){
+    msg = "提示：点击底部分享按钮 <b>⬆️</b>，选择「添加到主屏幕」，即可像App一样使用";
+  }else if(isAndroid){
+    msg = "提示：点击浏览器菜单（右上角 ⋮），选择「添加到主屏幕」或「安装应用」";
+  }else{
+    return;
+  }
+  const tip = document.getElementById('installTip');
+  tip.innerHTML = msg + ' <span class="close-tip" id="closeTip">✕</span>';
+  tip.classList.add('show');
+  document.getElementById('closeTip').addEventListener('click', ()=>{
+    tip.classList.remove('show');
+    localStorage.setItem('ledger_install_tip_dismissed', '1');
+  });
+}
+
+})();
+</script>
+</body>
+</html>
